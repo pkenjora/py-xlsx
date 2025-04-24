@@ -153,9 +153,16 @@ class Sheet(object):
         sheetDoc = self.workbook.domzip["xl/worksheets/sheet%d.xml" % self.id]
         sheetData = sheetDoc.find("{http://schemas.openxmlformats.org/spreadsheetml/2006/main}sheetData")
         # @type sheetData Element
+        rowCount = 0
         for rowNode in sheetData:
             rowNum = int(rowNode.get("r"))
             rowCells = []
+
+            rowCount += 1
+            while rowCount < rowNum:
+              yield rowCount, []
+              rowCount += 1
+
             for columnNode in rowNode:
                 colType = columnNode.get("t")
                 cellId = columnNode.get("r")
