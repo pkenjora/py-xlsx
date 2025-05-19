@@ -176,7 +176,7 @@ class Sheet(object):
                             stringIndex = columnNode[0].text
                             data = self.workbook.sharedStrings[int(stringIndex)]
                         #Built in date-formatted fields
-                        elif cellS and re.match("^[\d\.]+$", columnNode[0].text):
+                        elif cellS and columnNode[0].text and re.match("^[\d\.]+$", columnNode[0].text):
                             if int(self.workbook.cellStyles[int(cellS)].get('numFmtId')) in range(14, 22+1):
                                 data = xldate_as_tuple(
                                     float(columnNode[0].text),
