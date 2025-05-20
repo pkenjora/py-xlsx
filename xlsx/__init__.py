@@ -7,7 +7,7 @@ __author__="Ståle Undheim <staale@staale.org>"
 
 import re
 import zipfile
-from xlsx.xldate import xldate_as_tuple
+from xlsx.xldate import xldate_as_python
 from xlsx.formatting import is_date_format_string
 from xlsx.timemachine import UnicodeMixin
 
@@ -178,12 +178,12 @@ class Sheet(object):
                         #Built in date-formatted fields
                         elif cellS and columnNode[0].text and re.match("^[\d\.]+$", columnNode[0].text):
                             if int(self.workbook.cellStyles[int(cellS)].get('numFmtId')) in range(14, 22+1):
-                                data = xldate_as_tuple(
+                                data = xldate_as_python(
                                     float(columnNode[0].text),
                                     datemode=0)
                             elif (self.workbook.cellStyles[int(cellS)].get('numFmtId') in self.workbook.numFmts) \
                                 and is_date_format_string(self.workbook.numFmts[self.workbook.cellStyles[int(cellS)].get('numFmtId')]):
-                                data = xldate_as_tuple(
+                                data = xldate_as_python(
                                     float(columnNode[0].text),
                                     datemode=0)
                             else:

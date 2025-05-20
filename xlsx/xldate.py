@@ -18,6 +18,7 @@
 #    Noon on Gregorian 1900-03-01 (day 61 in the 1900-based system) is JDN 2415080.0
 #    Noon on Gregorian 1904-01-02 (day  1 in the 1904-based system) is JDN 2416482.0
 
+from datetime import date, datetime
 from xlsx.timemachine import int_floor_div as ifd
 
 _JDN_delta = (2415080 - 61, 2416482 - 1)
@@ -52,6 +53,15 @@ _XLDAYS_TOO_LARGE = (2958466, 2958466 - 1462) # This is equivalent to 10000-01-0
 # @throws XLDateTooLarge Gregorian year 10000 or later
 # @throws XLDateBadDatemode datemode arg is neither 0 nor 1
 # @throws XLDateError Covers the 4 specific errors
+
+
+def xldate_as_python(xldate, datemode):
+  value = xldate_as_tuple(xldate, datemode)
+  if any(value[3:]):
+    return datetime(*value)
+  else:
+    return date(*value[:3])
+
 
 def xldate_as_tuple(xldate, datemode):
     if datemode not in (0, 1):
